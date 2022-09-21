@@ -1,0 +1,18 @@
+GET http://localhost:8080/article/
+
+
+###
+
+POST http://localhost:8080/article/
+Content-Type: application/json
+
+{
+    "designation": "Snickers",
+    "price": 1.99
+}
+
+###
+
+GET http://localhost:8080/article/anders
+
+
