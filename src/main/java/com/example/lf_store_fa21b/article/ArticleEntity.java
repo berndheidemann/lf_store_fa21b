@@ -5,12 +5,13 @@ import com.example.lf_store_fa21b.supplier.SupplierEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class ArticleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long aid;
+    private Long id;
 
     @NotBlank(message = "Designation is mandatory")
     private String designation;
@@ -35,7 +36,27 @@ public class ArticleEntity {
     @Column(name = "last_update_date", nullable = false)
     private LocalDateTime lastUpdateDate = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private SupplierEntity supplier;
+    @ManyToMany
+    @JoinTable(
+            name = "article_supplier",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "supplier_id"))
+    private Set<SupplierEntity> suppliers;
+
+    public void addSupplier(SupplierEntity supplier) {
+        if (this.suppliers == null) {
+            this.suppliers = new HashSet<>();
+        }
+        this.suppliers.add(supplier);
+        if (supplier.getArticles() == null) {
+            supplier.setArticles(new HashSet<>());
+        }
+        supplier.getArticles().add(this);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

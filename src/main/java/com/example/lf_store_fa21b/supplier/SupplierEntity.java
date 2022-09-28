@@ -20,7 +20,7 @@ public class SupplierEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sid;
+    private Long id;
 
     @NotBlank
     private String name;
@@ -29,8 +29,13 @@ public class SupplierEntity {
             cascade = CascadeType.ALL)
     private ContactEntity contact;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "suppliers")
     private Set<ArticleEntity> articles;
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 
 
 }

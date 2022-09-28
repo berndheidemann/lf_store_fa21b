@@ -1,5 +1,6 @@
 package com.example.lf_store_fa21b.article;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetArticleDTO {
+public class PostArticleSupplierDTO {
 
-    private Long id;
-    private String designation;
-    private Double price;
+    private Long supplierId;
+    private Long articleId;
 
 }

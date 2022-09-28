@@ -3,31 +3,40 @@ package com.example.lf_store_fa21b.article;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
 
     private ArticleRepository repository;
 
-    public ArticleService(ArticleRepository repository) {
+    private ArticleMappingService articleMappingService;
+
+    public ArticleService(ArticleRepository repository, ArticleMappingService articleMappingService) {
         this.repository = repository;
+        this.articleMappingService = articleMappingService;
     }
 
-    public List<GetArticleDTO> findAll() {
+    public List<ArticleEntity> findAll() {
         var articles = repository.findAll();
-        return articles.stream().map(a -> new GetArticleDTO(a)).collect(Collectors.toList());
+        return articles;
     }
 
-    public GetArticleDTO create(PostArticleDTO dto) {
-        var entity = dto.mapToEntity();
-
-        entity = this.repository.save(entity);
-
-        return new GetArticleDTO(entity);
+    public ArticleEntity create(ArticleEntity article) {
+        return repository.save(article);
     }
 
-    public List<ArticleEntity> findAllAnders() {
-        return this.repository.findAll();
+    // find by id
+    public ArticleEntity readById(Long id) {
+        var entity = this.repository.findById(id).orElseThrow();
+        return entity;
+    }
+
+
+    public ArticleEntity update(ArticleEntity articleEntity) {
+        var entity = this.readById(articleEntity.getId());
+        entity.setDesignation(articleEntity.getDesignation());
+        entity.setPrice(articleEntity.getPrice());
+        entity.setSuppliers(articleEntity.getSuppliers());
+        return repository.save(entity);
     }
 }

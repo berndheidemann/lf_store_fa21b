@@ -1,5 +1,6 @@
 package com.example.lf_store_fa21b.article;
 
+import com.example.lf_store_fa21b.supplier.SupplierRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,4 @@ public class PostArticleDTO {
     private Double price;
 
 
-    public ArticleEntity mapToEntity() {
-        var entity = new ArticleEntity();
-        entity.setDesignation(this.designation);
-        entity.setPrice(this.price);
-        return entity;
-    }
 }
