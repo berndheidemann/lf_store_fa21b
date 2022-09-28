@@ -41,7 +41,7 @@ public class PostSupplierIT extends AbstractIntegrationTest {
                 .getContentAsString();
 
 
-        final var id = Long.parseLong(new JSONObject(contentAsString).get("sid").toString());
+        final var id = Long.parseLong(new JSONObject(contentAsString).get("id").toString());
         final var loadedEntity = supplierRepository.findById(id);
 
         assertThat(loadedEntity.get().getName()).isEqualTo("Meier");
@@ -49,5 +49,21 @@ public class PostSupplierIT extends AbstractIntegrationTest {
         assertThat(loadedEntity.get().getContact().getPostcode()).isEqualTo("28209");
         assertThat(loadedEntity.get().getContact().getCity()).isEqualTo("Bremen");
         assertThat(loadedEntity.get().getContact().getPhone()).isEqualTo("01637122020");
+    }
+
+
+    @Test
+    void postSupplierMissingStreet() throws Exception {
+        String content = """
+                {
+                "name": "Meier",
+                "postcode": "28202",
+                "city": "Bremen",
+                "phone": "01637122020"
+                }
+                """;
+        this.mockMvc.perform(post("/supplier/").content(content).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Street is mandatory")));
     }
 }

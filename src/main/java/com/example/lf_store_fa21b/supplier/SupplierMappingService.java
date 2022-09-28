@@ -3,6 +3,9 @@ package com.example.lf_store_fa21b.supplier;
 
 import com.example.lf_store_fa21b.article.ArticleMappingService;
 import com.example.lf_store_fa21b.contact.ContactEntity;
+import com.example.lf_store_fa21b.supplier.dto.AddSupplierDto;
+import com.example.lf_store_fa21b.supplier.dto.GetAllArticlesBySupplierIdDto;
+import com.example.lf_store_fa21b.supplier.dto.GetSupplierDto;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;

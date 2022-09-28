@@ -1,4 +1,4 @@
-package com.example.lf_store_fa21b.article;
+package com.example.lf_store_fa21b.article.dto;
 
 
 import lombok.AllArgsConstructor;

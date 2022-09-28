@@ -20,13 +20,17 @@ Content-Type: application/json
   "street": "Rue de la gare",
   "city": "Lausanne",
   "phone": "021 123 45 67",
-  "postcode": "10002"
+  "postcode": "1000"
 }
 
 ###
 
 GET http://localhost:8080/supplier/
 
+
+###
+
+GET http://localhost:8080/supplier/1
 ###
 
 PUT http://localhost:8080/supplier/1

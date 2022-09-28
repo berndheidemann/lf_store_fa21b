@@ -1,5 +1,7 @@
 package com.example.lf_store_fa21b.supplier;
 
+import com.example.lf_store_fa21b.supplier.dto.AddSupplierDto;
+import com.example.lf_store_fa21b.supplier.dto.GetSupplierDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

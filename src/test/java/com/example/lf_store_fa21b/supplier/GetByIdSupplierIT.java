@@ -44,7 +44,7 @@ public class GetByIdSupplierIT extends AbstractIntegrationTest {
         // call the endpoint /supplier/{id}
         this.mockMvc
                 .perform(
-                        get("/supplier/%d".formatted(1))
+                        get("/supplier/1")
                 )
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Supplier not found on id: 1"));

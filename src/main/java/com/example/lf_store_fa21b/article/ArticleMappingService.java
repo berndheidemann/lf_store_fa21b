@@ -1,5 +1,7 @@
 package com.example.lf_store_fa21b.article;
 
+import com.example.lf_store_fa21b.article.dto.GetArticleDTO;
+import com.example.lf_store_fa21b.article.dto.PostArticleDTO;
 import org.springframework.stereotype.Service;
 
 @Service

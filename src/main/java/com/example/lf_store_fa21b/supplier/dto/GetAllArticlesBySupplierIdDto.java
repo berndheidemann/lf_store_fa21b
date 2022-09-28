@@ -1,6 +1,6 @@
-package com.example.lf_store_fa21b.supplier;
+package com.example.lf_store_fa21b.supplier.dto;
 
-import com.example.lf_store_fa21b.article.GetArticleDTO;
+import com.example.lf_store_fa21b.article.dto.GetArticleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

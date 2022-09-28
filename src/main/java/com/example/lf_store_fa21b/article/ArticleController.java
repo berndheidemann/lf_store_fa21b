@@ -1,5 +1,8 @@
 package com.example.lf_store_fa21b.article;
 
+import com.example.lf_store_fa21b.article.dto.GetArticleDTO;
+import com.example.lf_store_fa21b.article.dto.PostArticleDTO;
+import com.example.lf_store_fa21b.article.dto.PostArticleSupplierDTO;
 import com.example.lf_store_fa21b.supplier.SupplierService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +39,11 @@ public class ArticleController {
      * @return List of articles
      */
     @GetMapping("/")
-    public List<GetArticleDTO> findAll() {
+    public List<GetArticleDTO> findAll(@RequestParam(required = false) String designation) {
+        if (designation != null) {
+            var articles = this.articleService.getArticleByDesignation(designation);
+            return articles.stream().map(articleMappingService::mapToGetDto).collect(Collectors.toList());
+        }
         return this.articleService
                 .findAll()      // get all articles
                 .stream()   // convert to stream
@@ -49,7 +56,7 @@ public class ArticleController {
         var entity = this.articleService.create(this.articleMappingService.mapToEntity(dto));
         return this.articleMappingService.mapToGetDto(entity);
     }
-    
+
     @PostMapping("/addSupplier")
     public ResponseEntity addArticleSupplier(@RequestBody PostArticleSupplierDTO dto) {     // designation, price
 
@@ -58,5 +65,11 @@ public class ArticleController {
         articleEntity.addSupplier(supplierEntity);
         this.articleService.update(articleEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public GetArticleDTO readById(@PathVariable Long id) {
+        var entity = this.articleService.readById(id);
+        return this.articleMappingService.mapToGetDto(entity);
     }
 }
