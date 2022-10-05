@@ -22,6 +22,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, org.springframework.http.HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CurrencycodeNotFoundException.class)
+    public ResponseEntity<?> currencycodeNotFoundException(CurrencycodeNotFoundException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                new java.util.Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(errorDetails, org.springframework.http.HttpStatus.NOT_FOUND);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {

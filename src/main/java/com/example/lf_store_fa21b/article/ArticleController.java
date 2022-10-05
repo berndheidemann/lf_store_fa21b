@@ -3,6 +3,8 @@ package com.example.lf_store_fa21b.article;
 import com.example.lf_store_fa21b.article.dto.GetArticleDTO;
 import com.example.lf_store_fa21b.article.dto.PostArticleDTO;
 import com.example.lf_store_fa21b.article.dto.PostArticleSupplierDTO;
+import com.example.lf_store_fa21b.exceptionhandling.CurrencycodeNotFoundException;
+import com.example.lf_store_fa21b.exchangerateservice.ExchangeRateService;
 import com.example.lf_store_fa21b.supplier.SupplierService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class ArticleController {
     private ArticleService articleService;
     private ArticleMappingService articleMappingService;
     private SupplierService supplierService;
+    private ExchangeRateService exchangeRateService;
 
     /**
      * Constructor
@@ -27,10 +30,16 @@ public class ArticleController {
      * @param articleMappingService
      * @param supplierService
      */
-    public ArticleController(ArticleService articleService, ArticleMappingService articleMappingService, SupplierService supplierService) {
+    public ArticleController(
+            ArticleService articleService,
+            ArticleMappingService articleMappingService,
+            SupplierService supplierService,
+            ExchangeRateService exchangeRateService) {
+
         this.articleService = articleService;
         this.articleMappingService = articleMappingService;
         this.supplierService = supplierService;
+        this.exchangeRateService = exchangeRateService;
     }
 
     /**
@@ -68,8 +77,19 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public GetArticleDTO readById(@PathVariable Long id) {
-        var entity = this.articleService.readById(id);
-        return this.articleMappingService.mapToGetDto(entity);
+    public GetArticleDTO readById(@PathVariable Long id, @RequestParam(required = false) String currency) {
+        if (currency == null) {
+            var entity = this.articleService.readById(id);
+            return this.articleMappingService.mapToGetDto(entity);
+        } else {
+            var entity = this.articleService.readById(id);
+            var dto = this.articleMappingService.mapToGetDto(entity, currency);
+            var rate = this.exchangeRateService.convert("EUR", currency, dto.getPrice());
+            if (rate.getResult() == 0.0) {
+                throw new CurrencycodeNotFoundException();
+            }
+            dto.setPrice(rate.getResult());
+            return dto;
+        }
     }
 }

@@ -14,11 +14,18 @@ public class ArticleMappingService {
         return articleEntity;
     }
 
+    public GetArticleDTO mapToGetDto(ArticleEntity articleEntity, String currency) {
+        GetArticleDTO getArticleDTO = mapToGetDto(articleEntity);
+        getArticleDTO.setCurrency(currency);
+        return getArticleDTO;
+    }
+
     public GetArticleDTO mapToGetDto(ArticleEntity articleEntity) {
         GetArticleDTO getArticleDTO = new GetArticleDTO();
         getArticleDTO.setId(articleEntity.getId());
         getArticleDTO.setDesignation(articleEntity.getDesignation());
         getArticleDTO.setPrice(articleEntity.getPrice());
+        getArticleDTO.setCurrency("EUR");
         return getArticleDTO;
     }
 }

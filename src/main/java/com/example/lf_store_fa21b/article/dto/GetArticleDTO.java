@@ -12,5 +12,6 @@ public class GetArticleDTO {
     private Long id;
     private String designation;
     private Double price;
+    private String currency;
 
 }

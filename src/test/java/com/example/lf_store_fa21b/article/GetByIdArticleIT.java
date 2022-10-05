@@ -27,6 +27,23 @@ public class GetByIdArticleIT extends AbstractIntegrationTest {
 
     }
 
+    @Test
+    public void happyPathWithCurrency() throws Exception {
+        // create an article in the database
+        var article = new ArticleEntity();
+        article.setDesignation("Test");
+        article.setPrice(1.0);
+        article = this.articleRepository.save(article);
+
+        // call the endpoint /article/{id}
+        this.mockMvc.perform(get("/article/%d?currency=USD".formatted(article.getId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(article.getId()))
+                .andExpect(jsonPath("$.designation").value(article.getDesignation()))
+                .andExpect(jsonPath("$.currency").value("USD"));
+
+    }
+
     // add a test for the case that the article does not exist
     @Test
     public void articleDoesNotExist() throws Exception {
